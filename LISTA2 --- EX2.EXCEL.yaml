@@ -1,0 +1,53 @@
+name: LISTA2 --- EX2
+description: ''
+host: EXCEL
+api_set: {}
+script:
+  content: |
+    $("#show").click(() => tryCatch(run));
+
+    async function run() {
+      await Excel.run(async (context) => {
+        const range = context.workbook.getSelectedRange();
+        range.format.fill.color = opitioncolor.value;
+        range.load("address");
+        await context.sync();
+      });
+    }
+
+    async function tryCatch(callback) {
+      try {
+        await callback();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  language: typescript
+template:
+  content: "<div>\n\t<select id=\"opitioncolor\" name=\"select\">\n    <option value=\"black\" selected>Preto</option>\n    <option value=\"red\" >Vermelho</option>\n    <option value=\"blue\" >Azul</option>\n    <option value=\"green\">Verde</option>\n  </select>\n</div>\n<div>\n\t<button id=\"show\">Colorir local Selecionado</button>\n</div>"
+  language: html
+style:
+  content: |-
+    section.samples {
+        margin-top: 20px;
+    }
+
+    section.samples .ms-Button, section.setup .ms-Button {
+        display: block;
+        margin-bottom: 5px;
+        margin-left: 20px;
+        min-width: 80px;
+    }
+  language: css
+libraries: |
+  https://appsforoffice.microsoft.com/lib/1/hosted/office.js
+  @types/office-js
+
+  office-ui-fabric-js@1.4.0/dist/css/fabric.min.css
+  office-ui-fabric-js@1.4.0/dist/css/fabric.components.min.css
+
+  core-js@2.4.1/client/core.min.js
+  @types/core-js
+
+  jquery@3.1.1
+  @types/jquery@3.3.1
